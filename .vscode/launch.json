@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Run MenuTest",
+            "request": "launch",
+            "mainClass": "MenuTest",
+            "console": "integratedTerminal",
+            "vmArgs": "--enable-native-access=ALL-UNNAMED"
+        }
+    ]
+}
