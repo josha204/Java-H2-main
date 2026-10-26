@@ -34,13 +34,83 @@ public class Menu {
             return;
         }
 
-        terminal;
+        terminal = TerminalBuilder.builder().system(true).provider("jni").dumb(false).build();
+        original = terminal.enterRawMode();
+
+        terminal.puts(Capability.keypad_xmit);
+        terminal.flush();
+
+        reader = new BindingReader(terminal.reader());
+    }
+
+    
+    // Reuseable menu method
+    public static int choose(String title, String[] options) {
+
+        if (reader == null) {
+            throw new IllegalStateException("Menu not initialized");
+        }
+
+        if (options.length == 0) {
+            throw new IllegalArgumentException("Menu has no options");
+        }
+
+        int selected = 0;
+
+        while (true) {
+            // Clear screen
+            terminal.writer().print("\u001B[2J\u001B[H");
+
+            terminal.writer().println("=== " +title+ " ===");
+            terminal.writer().println();
+
+            for (int i = 0; i < options.length; i++) {
+                if (i == selected) {
+                    terminal.writer().println("> " + options[i]);
+                } else {
+                    terminal.writer().println("  " + options[i]);
+                }
+            }
+
+            terminal.flush();
+
+            String input = reader.readBinding(keys);
+            if (input == null) {
+                return -1;
+            }
+
+            switch (input) {
+                case "UP" ->
+                    selected = (selected - 1 + options.length) % options.length;
+
+                case "DOWN" ->
+                    selected = (selected + 1) % options.length;
+
+                case "SELECT" -> {
+                    terminal.writer().print("\u001B[2J\u001B[H");
+                    terminal.flush();
+                    return selected;
+                }
+            }
+        }
     }
 
 
+    // Run only ONCE when the game closes
+    public static void shutdown() throws IOException {
+        if (terminal == null) {
+            return;
+        }
 
-
-
-
+        try {
+            terminal.puts(Capability.keypad_local);
+            terminal.setAttributes(original);
+            terminal.flush();
+        } finally {
+            terminal.close();
+            terminal = null;
+            reader = null;
+        }
+    }
 
 }

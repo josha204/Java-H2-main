@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "H2_main",
+            "request": "launch",
+            "mainClass": "H2_main",
+            "projectName": "Java-H2-main_21960df9"
+        },
+        {
+            "type": "java",
             "name": "Run MenuTest",
             "request": "launch",
             "mainClass": "MenuTest",
