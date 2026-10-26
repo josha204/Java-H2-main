@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class H2_main {
+public class maintest {
     public static void main(String[] args) throws IOException {
         Menu.initialize();
 
