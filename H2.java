@@ -11,22 +11,20 @@ import java.util.*;
 public class H2 {
     public static final Scanner stdin = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         
         Menu.initialize();
         System.out.println("Welcome to this Java Dungeon game!");
         
-        try {
-            int choice = Menu.choose("MAIN MENU", new String[] {"Start Game", "Load Game", "Map Editor", "Settings", "Quit"});
-            clearScreen();
+        int choice = Menu.choose("MAIN MENU", new String[] {"Start Game", "Load Game", "Map Editor", "Settings", "Quit"});
+        clearScreen();
 
-            switch (choice) {
-                case 0 -> startGame();
-                case 1 -> loadGame();
-                case 2 -> mapEditor();
-                case 3 -> settings();
-                case 4 -> quit();
-            }
+        switch (choice) {
+            case 0 -> startGame();
+            case 1 -> loadGame();
+            case 2 -> mapEditor();
+            case 3 -> settings();
+            case 4 -> quit();
         }
     }
 
@@ -50,8 +48,14 @@ public class H2 {
     }
 
 
+    // Settings
+    public static void settings() {
+        return;
+    }
+
+
     // Quit
-    public static void Quit() {
+    public static void quit() {
         return;
     }
 

@@ -3,6 +3,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "PlayerWindow",
+            "request": "launch",
+            "mainClass": "PlayerWindow",
+            "projectName": "Java-H2-main_21960df9"
+        },
+        {
+            "type": "java",
             "name": "H2_main",
             "request": "launch",
             "mainClass": "H2_main",

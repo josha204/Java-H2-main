@@ -2,14 +2,14 @@ public class Map {
     private String mapName;
     private int height;
     private int width;
-    private Tile[][] mapGrid;
+    private Tile[][] fullMap;
 
 
-    public Map(String mapName, int height, int width, Tile[][] mapGrid) {
+    public Map(String mapName, int height, int width, Tile[][] fullMap) {
         this.mapName = mapName;
         this.height = height;
         this.width = width;
-        this.mapGrid = mapGrid;
+        this.fullMap = fullMap;
     }
 
 
@@ -29,5 +29,31 @@ public class Map {
         return width;
     }
 
-    public int 
+    // Get Full Map
+    public Tile[][] getFullMap() {
+        return fullMap;
+    }
+
+
+
+ // SETTERS
+    // Set Map Name
+    public void setMapName(String mapName) {
+        this.mapName = mapName;
+    }
+
+    // Set Height
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    // Set Width
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    // Set Full Map
+    public void setFullMap(Tile[][] fullMap) {
+        this.fullMap = fullMap;
+    }
 }
