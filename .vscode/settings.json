@@ -2,5 +2,8 @@
     "java.project.referencedLibraries": [
         "lib/**/*.jar"
     ],
-    "java.debug.settings.console": "integratedTerminal"
+    "java.debug.settings.console": "integratedTerminal",
+    "files.exclude": {
+        "**/*.class": true
+    }
 }

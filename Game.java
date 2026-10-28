@@ -3,6 +3,7 @@ public class Game {
     private Map playerMap;
     private Monster monster;
     private Map monsterMap;
+    private Map masterMap;
     private int gameId;
 
 

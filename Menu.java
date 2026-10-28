@@ -16,6 +16,9 @@ public class Menu {
     private static Attributes original;
     private static BindingReader reader;
     private static final KeyMap<String> keys = new KeyMap<>();
+    
+    private boolean hasError = false;
+    private String error = " ";
 
 
     // Bind up/down/enter keys for menu navigation and selection.
@@ -43,33 +46,69 @@ public class Menu {
         reader = new BindingReader(terminal.reader());
     }
 
-    
-    // Reuseable menu method
-    public static int choose(String title, String[] options) {
+ // GETTERS
+    // Get Has Error
+    public boolean getHasError() {
+        return hasError;
+    }
 
+    // Get Error
+    public String getError() {
+        return error;
+    }
+
+ // SETTERS
+    // Set Has Error
+    public void setHasError(boolean hasError) {
+        this.hasError = hasError;
+    }
+
+    // Set Error
+    public void setError(String error) {
+        this.error = error;
+    }
+
+    // Choose w/ Menu
+    public static int chooseMenu(String title, String[] options, boolean hasError, String error) {
+        return choose(title, options, false, hasError, error);
+    }
+
+
+    // Choose w/ Question
+    public static int chooseQuestion(String question, String[] answers, boolean hasError, String error) {
+        return choose(question, answers, true, hasError, error);
+    }
+
+
+    // Reuseable menu method
+    private static int choose(String prompt, String[] options, boolean isQuestion, boolean hasError, String error) {
         if (reader == null) {
             throw new IllegalStateException("Menu not initialized");
         }
-
         if (options.length == 0) {
             throw new IllegalArgumentException("Menu has no options");
         }
 
+
         int selected = 0;
-
         while (true) {
-            // Clear screen
             terminal.writer().print("\u001B[2J\u001B[H");
+            
+            if (hasError) {
+                System.out.println(error);
+            } else {
+                System.out.println("\n");
+            }
 
-            terminal.writer().println("=== " +title+ " ===");
+            if (isQuestion) {
+                terminal.writer().println(prompt);
+            } else {
+                terminal.writer().println("=== " + prompt + " ===");
+            }
             terminal.writer().println();
 
             for (int i = 0; i < options.length; i++) {
-                if (i == selected) {
-                    terminal.writer().println("> " + options[i]);
-                } else {
-                    terminal.writer().println("  " + options[i]);
-                }
+                terminal.writer().println((i == selected ? "> " : "  ") + options[i]);
             }
 
             terminal.flush();
@@ -80,12 +119,8 @@ public class Menu {
             }
 
             switch (input) {
-                case "UP" ->
-                    selected = (selected - 1 + options.length) % options.length;
-
-                case "DOWN" ->
-                    selected = (selected + 1) % options.length;
-
+                case "UP" -> selected = (selected - 1 + options.length) % options.length;
+                case "DOWN" -> selected = (selected + 1) % options.length;
                 case "SELECT" -> {
                     terminal.writer().print("\u001B[2J\u001B[H");
                     terminal.flush();

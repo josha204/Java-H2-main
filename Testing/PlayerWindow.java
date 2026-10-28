@@ -1,3 +1,4 @@
+package Testing;
 // josha204
 
 // NOTE
@@ -5,6 +6,8 @@
 // This is because this program's purpose is to refine a working interface for window management on a larger, grid-based map using 2D arrays and window-handling logic.
 
 import java.util.*;
+
+import H2;
 
 public class PlayerWindow {
     
@@ -45,14 +48,12 @@ public class PlayerWindow {
             }
             
             H2.clearScreen();
-            System.out.println();
-            System.out.println("=== MAP DIMENSIONS ===");
+            System.out.println("\n=== MAP DIMENSIONS ===");
             System.out.println("Current width: " + width);
             System.out.println("Current height: " + height);
-            System.out.println();
 
 
-            System.out.println("=== MAIN MENU ===");
+            System.out.println("\n=== MAIN MENU ===");
             System.out.println("1) Start Simulation \n2) Reconfigure Map \n3) Quit");
             System.out.print("\nMake a choice: ");
             int choice = stdin.nextInt();
@@ -70,8 +71,8 @@ public class PlayerWindow {
 
     public static void begin(int rows, int cols) throws ArrayIndexOutOfBoundsException {
         stdin.nextLine();
-
         H2.clearScreen();
+
         int Prow = 0;
         int Pcol = 0;
 
@@ -91,6 +92,7 @@ public class PlayerWindow {
         // Take input for what percentage of the map should be walkable, signified by '_' characters
         int openTiles = 0;
         while (true) {
+            
             H2.clearScreen();
             System.out.print("Enter what percentage of the map should be walkable: ");
             Double temp = stdin.nextDouble();
@@ -162,20 +164,25 @@ public class PlayerWindow {
         // Handles the movement logic and validation until the exit conditional is met
         stdin.nextLine();
         boolean running = true;
+        boolean sharedTile = false;
         while (running) {
             while (true) {
-
+                
+                // Prevents P and/or C from overwriting one another when on the same tile.
+                if (Prow == AIrow && Pcol == AIcol) {
+                    fullMap[Prow][Pcol] = "P C";
+                }
 
                 // Print full map
                 for (int i = 0; i < cols; i++) {
-                    System.out.print("\t" + (i + 1));
+                    System.out.print("\t " + (i + 1));
                 }
 
                 System.out.println("\n\n");
                 for (int i = 0; i < rows; i++) {
-                    System.out.print((i + 1) + "\t");
+                    System.out.print((i + 1) + "\t ");
                     for (int k = 0; k < cols; k++) {
-                        System.out.print(fullMap[i][k] + "\t");
+                        System.out.print(fullMap[i][k] + "\t ");
                     }
                     System.out.println("\n\n");
                 }
@@ -193,25 +200,41 @@ public class PlayerWindow {
                 // Validate input
                 if (move.trim().equalsIgnoreCase("W")) {
                     if (Prow != 0 && fullMap[Prow - 1][Pcol] != "#") {
-                        fullMap[Prow][Pcol] = "_";
+                        if (fullMap[Prow][Pcol] == "P C") {
+                            fullMap[Prow][Pcol] = "C";
+                        } else {
+                            fullMap[Prow][Pcol] = "_";
+                        }
                         Prow -= 1;
                         fullMap[Prow][Pcol] = "P";
                     }
                 } else if (move.trim().equalsIgnoreCase("A")) {
                     if (Pcol != 0 && fullMap[Prow][Pcol - 1] != "#") {
-                        fullMap[Prow][Pcol] = "_";
+                        if (fullMap[Prow][Pcol] == "P C") {
+                            fullMap[Prow][Pcol] = "C";
+                        } else {
+                            fullMap[Prow][Pcol] = "_";
+                        }
                         Pcol -= 1;
                         fullMap[Prow][Pcol] = "P";
                     }
                 } else if (move.trim().equalsIgnoreCase("S")) {
                     if (Prow != rows - 1 && fullMap[Prow + 1][Pcol] != "#") {
-                        fullMap[Prow][Pcol] = "_";
+                        if (fullMap[Prow][Pcol] == "P C") {
+                            fullMap[Prow][Pcol] = "C";
+                        } else {
+                            fullMap[Prow][Pcol] = "_";
+                        }
                         Prow += 1;
                         fullMap[Prow][Pcol] = "P";
                     }
                 } else if (move.trim().equalsIgnoreCase("D")) {
                     if (Pcol != cols - 1 && fullMap[Prow][Pcol + 1] != "#") {
-                        fullMap[Prow][Pcol] = "_";
+                        if (fullMap[Prow][Pcol] == "P C") {
+                            fullMap[Prow][Pcol] = "C";
+                        } else {
+                            fullMap[Prow][Pcol] = "_";
+                        }
                         Pcol += 1;
                         fullMap[Prow][Pcol] = "P";
                     }
