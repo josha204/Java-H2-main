@@ -24,11 +24,11 @@ public class H2 {
     // Global Current Map
     public static Map currentMap;
 
-    // Global Error Conditional
-    public static boolean hasError = false;
+    // Global message Conditional
+    public static boolean hasMessage = false;
 
-    // Global Error String
-    public static String error = "";
+    // Global message String
+    public static String message = "";
 
     public static void main(String[] args) throws IOException {
 
@@ -40,8 +40,8 @@ public class H2 {
         System.out.println("Welcome to this Java Dungeon game!");
         
         while (true) {
-            int choice = Menu.chooseMenu("MAIN MENU", new String[] {"Start Game", "Load Game", "Map Editor", "Settings", "Quit"}, hasError, error);
-            hasError = false;
+            int choice = Menu.chooseMenu("MAIN MENU", new String[] {"Start Game", "Load Game", "Map Editor", "Settings", "Quit"}, hasMessage, message);
+            hasMessage = false;
             clearScreen();
 
             switch (choice) {
@@ -74,40 +74,54 @@ public class H2 {
     public static Map mapEditor() {
         System.out.println();
         while (true) {
-            int menuChoice = Menu.chooseMenu("MAP EDITOR MENU", new String[] {"Make New Map", "Generate Map", "Load Map", "Save Current Map", "View Current Map", "Edit Current Map", "Exit"}, hasError, error);
-            hasError = false;
+            int menuChoice = Menu.chooseMenu("MAP EDITOR MENU", new String[] {"Make New Map", "Generate Map", "Load Map", "Save Current Map", "View Current Map", "Edit Current Map", "Exit"}, hasMessage, message);
+            hasMessage = false;
             clearScreen();
 
             switch (menuChoice) {
                 // Make New Map
                 case 0 -> currentMap = makeNewMap();
 
+
                 // Generate Map
                 case 1 -> currentMap = generateMap();
+
 
                 // Load Map
                 case 2 -> {
                     if (!player.getSavedMaps().isEmpty()) {
-                        if (currentMap != null && !currentMap.getIsSaved()) {
-                            int questionChoice = Menu.chooseQuestion("Your current map isn't saved yet.\n\nDo you want to save it?", new String[] {"Yes", "No"}, hasError, error);
-                            hasError = false;
+                        if (currentMap != null) {
+                            boolean alreadySaved = false;
+                            for (Map savedMap : player.getSavedMaps()) {
+                                if (savedMap.hasSameLayout(currentMap)) {
+                                    alreadySaved = true;
+                                    break;
+                                }
+                            }
 
-                            if (questionChoice == 0) {
-                                currentMap.setIsSaved(true);
-                                player.getSavedMaps().add(currentMap);
-                            } else if (questionChoice != 1) {
-                                // The question was cancelled; stay in the map editor.
-                                break;
+                            if (!alreadySaved) {
+                                int questionChoice = Menu.chooseQuestion("Your current map isn't saved yet.\n\n Do you want to save it?", new String[] {"Yes", "No"}, hasMessage, message);
+                                
+                                switch (questionChoice) {
+                                    case 0 -> {
+                                        currentMap.setIsSaved(true);
+                                        player.getSavedMaps().add(currentMap);
+                                    } 
+                                    case 1 -> {
+                                        continue;
+                                    }
+                                }
                             }
                         }
                         // With no current map, or after the save decision, proceed to loading.
                         currentMap = loadMap();
                     }
                     else {
-                        hasError = true;
-                        error = "You currently don't have any saved maps.\n";
+                        hasMessage = true;
+                        message = "You currently don't have any saved maps.\n";
                     }
                 }
+
 
                 // Save Current Map
                 case 3 -> {
@@ -116,7 +130,6 @@ public class H2 {
                         for (Map savedMap : player.getSavedMaps()) {
                             if (savedMap.hasSameLayout(currentMap)) {
                                 alreadySaved = true;
-                                System.out.println("Right here");
                                 break;
                             }
                         }
@@ -124,35 +137,39 @@ public class H2 {
                         if (!alreadySaved) {
                             currentMap.setIsSaved(true);
                             player.getSavedMaps().add(currentMap);
-                            System.out.println("Map saved successfully");
+                            hasMessage = true;
+                            message = "Map saved successfully.\n";
                         } else {
-                            hasError = true;
-                            error = "A map with this layout is already saved.";
+                            hasMessage = true;
+                            message = "A map with this layout is already saved.\n";
                         }
                     }
                     else {
-                        hasError = true;
-                        error = "You currently don't have a map selected.\n";
+                        hasMessage = true;
+                        message = "You currently don't have a map selected.\n";
                     }
                 }
+
 
                 // View Current Map
                 case 4 -> {
                     if (currentMap != null && !currentMap.getName().equalsIgnoreCase("initialMap")) viewCurrentMap(currentMap);
                     else {
-                        hasError = true;
-                        error = "You currently don't have a map selected.\n";
+                        hasMessage = true;
+                        message = "You currently don't have a map selected.\n";
                     }
                 }
 
+                
                 // Edit Current Map
                 case 5 -> {
                     if (currentMap != null && !currentMap.getName().equalsIgnoreCase("initialMap")) currentMap = editCurrentMap(currentMap);
                     else {
-                        hasError = true;
-                        error = "You currently don't have a map selected.\n";
+                        hasMessage = true;
+                        message = "You currently don't have a map selected.\n";
                     }
                 }
+
 
                 // Exit
                 case 6 -> {
@@ -170,10 +187,53 @@ public class H2 {
     }
 
 
+ // GENERATE MAP HIERARCHY
     // Generate Map
     public static Map generateMap() {
-        Map newMap = new Map("newMap", 10, 10, new Tile[][] {{}}, false);
-        return newMap;
+
+        MapConfig mapConfig = null;
+        
+        // Main implementation
+        while (true) {
+            hasMessage = false;
+            int menuChoice = Menu.chooseMenu("GENERATE MAP MENU", new String[] {"Set Map Configuration", "Set Random Generation", "Generate Map", "Exit"}, hasMessage, message);
+
+            switch (menuChoice) {
+                // Set Map Configuration
+                case 0 -> {
+                    mapConfig = setMapConfiguration(mapConfig);
+                }
+
+                // Set Random Generation
+                case 1 -> {
+
+                }
+
+                // Generate Map
+                case 2 -> {
+                    currentMap = mapConfig.generateMap(genMode);
+                }
+
+                // Exit
+                case 3 -> {
+                    return currentMap;
+                }
+            }
+        }
+
+
+
+        // Test case
+        int height = 11;
+        int width = 10;
+        Tile[][] fullMap = new Tile[height][width];
+
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                fullMap[row][col] = new Tile("#", -1);
+            }
+        }
+        return new Map("newMap", height, width, fullMap, false);
     }
 
 
@@ -207,6 +267,12 @@ public class H2 {
 
 
  // UTILITY FUNCTIONS
+    // Print Map
+    public static void printMap() {
+
+    }
+    
+
     // Quit
     public static void quit() {
         System.exit(0);

@@ -17,8 +17,8 @@ public class Menu {
     private static BindingReader reader;
     private static final KeyMap<String> keys = new KeyMap<>();
     
-    private boolean hasError = false;
-    private String error = " ";
+    private boolean hasMessage = false;
+    private String message = " ";
 
 
     // Bind up/down/enter keys for menu navigation and selection.
@@ -47,41 +47,41 @@ public class Menu {
     }
 
  // GETTERS
-    // Get Has Error
-    public boolean getHasError() {
-        return hasError;
+    // Get Has message
+    public boolean gethasMessage() {
+        return hasMessage;
     }
 
-    // Get Error
-    public String getError() {
-        return error;
+    // Get message
+    public String getmessage() {
+        return message;
     }
 
  // SETTERS
-    // Set Has Error
-    public void setHasError(boolean hasError) {
-        this.hasError = hasError;
+    // Set Has message
+    public void sethasMessage(boolean hasMessage) {
+        this.hasMessage = hasMessage;
     }
 
-    // Set Error
-    public void setError(String error) {
-        this.error = error;
+    // Set message
+    public void setmessage(String message) {
+        this.message = message;
     }
 
     // Choose w/ Menu
-    public static int chooseMenu(String title, String[] options, boolean hasError, String error) {
-        return choose(title, options, false, hasError, error);
+    public static int chooseMenu(String title, String[] options, boolean hasMessage, String message) {
+        return choose(title, options, false, hasMessage, message);
     }
 
 
     // Choose w/ Question
-    public static int chooseQuestion(String question, String[] answers, boolean hasError, String error) {
-        return choose(question, answers, true, hasError, error);
+    public static int chooseQuestion(String question, String[] answers, boolean hasMessage, String message) {
+        return choose(question, answers, true, hasMessage, message);
     }
 
 
     // Reuseable menu method
-    private static int choose(String prompt, String[] options, boolean isQuestion, boolean hasError, String error) {
+    private static int choose(String prompt, String[] options, boolean isQuestion, boolean hasMessage, String message) {
         if (reader == null) {
             throw new IllegalStateException("Menu not initialized");
         }
@@ -94,8 +94,8 @@ public class Menu {
         while (true) {
             terminal.writer().print("\u001B[2J\u001B[H");
             
-            if (hasError) {
-                System.out.println(error);
+            if (hasMessage) {
+                System.out.println(message);
             } else {
                 System.out.println("\n");
             }
