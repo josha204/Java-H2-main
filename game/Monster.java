@@ -1,3 +1,5 @@
+package game;
+
 public class Monster {
     private String name;
     private String searchMode;

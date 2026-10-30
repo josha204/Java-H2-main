@@ -1,7 +1,7 @@
 package Testing;
 import java.io.*;
 
-import Menu;
+import game.*;
 
 public class maintest {
     public static void main(String[] args) throws IOException {

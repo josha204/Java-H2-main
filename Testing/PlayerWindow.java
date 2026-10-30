@@ -5,9 +5,8 @@ package Testing;
 // The way that this program handles more typical edge cases is far from professional, and many typical edge cases are unaccounted for. 
 // This is because this program's purpose is to refine a working interface for window management on a larger, grid-based map using 2D arrays and window-handling logic.
 
+import game.*;
 import java.util.*;
-
-import H2;
 
 public class PlayerWindow {
     

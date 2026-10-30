@@ -3,9 +3,23 @@
     "configurations": [
         {
             "type": "java",
+            "name": "mazetestSample",
+            "request": "launch",
+            "mainClass": "Testing.mazetestSample",
+            "projectName": "Java-H2-main_21960df9"
+        },
+        {
+            "type": "java",
+            "name": "mazetest",
+            "request": "launch",
+            "mainClass": "Testing.mazetest",
+            "projectName": "Java-H2-main_21960df9"
+        },
+        {
+            "type": "java",
             "name": "H2",
             "request": "launch",
-            "mainClass": "H2",
+            "mainClass": "game.H2",
             "projectName": "Java-H2-main_21960df9"
         },
         {

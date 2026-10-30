@@ -1,3 +1,5 @@
+package game;
+
 public class MapConfig {
     private String genMode;
     private int height;

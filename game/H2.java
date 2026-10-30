@@ -4,6 +4,7 @@
 // Overview:
 // see README.md
 
+package game;
 
 import java.io.*;
 import java.util.*;

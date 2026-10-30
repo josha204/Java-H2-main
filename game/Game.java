@@ -1,3 +1,5 @@
+package game;
+
 public class Game {
     private Player player;
     private Map playerMap;

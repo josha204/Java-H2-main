@@ -3,6 +3,8 @@
 
 // A globally reuseable Java program with a navigable, terminal-based menu input interface.
 
+package game;
+
 import java.io.IOException;
 import org.jline.terminal.*;
 import org.jline.utils.InfoCmp.Capability;
