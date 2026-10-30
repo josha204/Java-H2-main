@@ -25,6 +25,9 @@ public class H2 {
     // Global Current Map
     public static Map currentMap;
 
+    // Global Map Config
+    public static MapConfig mapConfig;
+
     // Global message Conditional
     public static boolean hasMessage = false;
 
@@ -36,6 +39,7 @@ public class H2 {
         player = new Player("Player", 100, new int[][] {{0, 0}}, new String[] {"   ", "   ", "   "}, new ArrayList<>(), new ArrayList<>(), 0);
         monster = new Monster("Monster", "idle", new int[][] {{0, 0}}, new int[][] {{0, 0}}, false);
         currentMap = new Map("initialMap", 10, 10, new Tile[][] {{}}, false);
+        mapConfig = new MapConfig("Not Specified", 0, 0, 1, 25, 2, 1, 4);
 
         Menu.initialize();
         System.out.println("Welcome to this Java Dungeon game!");
@@ -191,8 +195,6 @@ public class H2 {
  // GENERATE MAP HIERARCHY
     // Generate Map
     public static Map generateMap() {
-
-        MapConfig mapConfig = null;
         
         // Main implementation
         while (true) {
@@ -212,7 +214,7 @@ public class H2 {
 
                 // Generate Map
                 case 2 -> {
-                    currentMap = mapConfig.generateMap(genMode);
+                    currentMap = mapConfig.generateMap(mapConfig);
                 }
 
                 // Exit
@@ -231,12 +233,106 @@ public class H2 {
 
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                fullMap[row][col] = new Tile("#", -1);
+                fullMap[row][col] = new Tile("#", false, false, false, -1);
             }
         }
         return new Map("newMap", height, width, fullMap, false);
     }
 
+    // 
+    public static MapConfig setMapConfiguration(MapConfig mapConfig) {
+        String testMode = "thisgenmode";
+        while (true) {
+            clearScreen();
+            message = "=== CURRENT MAP CONFIGURATION ===\nGeneration Mode: " +testMode+ "\nHeight: " +mapConfig.getHeight()+ "\nWidth: " +mapConfig.getNumFloors()+ "\nPercentage Walkable: " +mapConfig.getPercentWalkable()+ "%\nHazard Count: " +mapConfig.getNumHazards()+ "\nMonster Count: " +mapConfig.getNumMonsters()+ "\nTreasure Count: " +mapConfig.getNumTreasures();
+            hasMessage = true;
+            
+            int choice = Menu.chooseMenu("MAP CONFIGURATION MENU", new String[] {"Set Generation Mode", "Set Height", "Set Width", "Set Floor Count", "Set Percentage Walkable", "Set Hazard Count", "Set Monster Count", "Set Treasure Count", "Save Map Configuration", "Exit"}, hasMessage, message);
+            clearScreen();
+
+            switch (choice) {
+                // Set Generation Mode
+                case 0 -> {
+                    int cChoice = Menu.chooseMenu("MAP GENERATION MODE", new String[] {"placeholder1", "placeholder2", "placeholder3"}, hasMessage, message);
+                    switch (cChoice) {
+                        // placeholder1
+                        // placeholder2
+                        // placeholder3
+                    }
+                }
+
+                // Set Height
+                case 1 -> {
+                    while (true) {
+                        System.out.print("Enter the map height: ");
+                        String height = stdin.nextLine();
+                        clearScreen();
+                        try {
+                            int input = Integer.parseInt(height);
+                            if (input > 10 && input % 2 == 1) {
+                                mapConfig.setHeight(input);
+                                break;
+                            } else {
+                                System.out.println("Please enter an odd integer greater than 10.\n\n");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Please enter an odd integer greater than 10.\n\n");
+                        }
+                    }
+                }
+
+                // Set Width
+                case 2 -> {
+                    while (true) {
+                        System.out.print("Enter the map width: ");
+                        String width = stdin.nextLine();
+                        clearScreen();
+                        try {
+                            int input = Integer.parseInt(width);
+                            if (input > 10 && input % 2 == 1) {
+                                mapConfig.setWidth(input);
+                                break;
+                            } else {
+                                System.out.println("Please enter an odd integer greater than 10.\n\n");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Please enter an odd integer greater than 10.\n\n");
+                        }
+                    }
+                }
+
+                // Set Floor Count
+                case 3 -> {
+                    while (true) {
+                        System.out.print("Enter the floor count: ");
+                        String numFloors = stdin.nextLine();
+                        clearScreen();
+                        try {
+                            int input = Integer.parseInt(numFloors);
+                            if (input > 0 && input < 5) {
+                                mapConfig.setNumFloors(input);
+                                break;
+                            } else {
+                                System.out.println("Please enter an integer between 1 and 4.\n\n");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Please enter an integer between 1 and 4.\n\n");
+                        }
+                    }
+                }
+
+                // Set Percent Walkable
+                case 4 -> {
+                    while (true) {
+                        System.out.print
+                    }
+                }
+            }
+        
+        
+        }
+        return mapConfig;
+    }
 
     // Load Map
     public static Map loadMap() {
